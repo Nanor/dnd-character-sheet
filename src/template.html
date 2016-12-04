@@ -1,0 +1,21 @@
+<div class='spell-list'>
+    {{#spells}}
+    <div class='spell'>
+        <h3 class='name'>{{name}}</h3>
+        <p class='type'><em>{{ formatSpellLevel(level, school) }} {{#ritual}}(ritual){{/}}</em></p>
+        <div class='stats'>
+            <div><strong>Casting Time:</strong> {{casting_time}}</div>
+            <div><strong>Range:</strong> {{range}}</div>
+            <div><strong>Components:</strong> {{components}} {{#material}}<em>({{material}})</em>{{/}}</div>
+            <div><strong>Duration:</strong> {{#concentration}}Concentration,{{/}} {{duration}}</div>
+        </div>
+        <div class='description'>
+            <p class='desc'>{{{desc}}}</p>
+            {{#higher_level}}
+            <span class='higher-level-label'><strong>At Higher Levels:</strong></span>
+            <span class='higher-level'>{{higher_level}}</span>
+            {{/}}
+        </div>
+    </div>
+    {{/}}
+</div>
