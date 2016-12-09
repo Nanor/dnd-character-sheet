@@ -69,6 +69,48 @@
     </div>
 
     <div class="tab {{#if selectedTab==='spells'}}selected{{/if}}">
+        <div class="filter-bar">
+            <span>
+                Name:
+                <input id="filter-name" type="text" value="{{filter.name}}">
+            </span>
+            <span>
+                Class:
+                <select multiple value="{{filter.class}}">
+                {{#classes}}
+                <option>{{.}}</option>
+                {{/}}
+            </select>
+            </span>
+            <span>
+                Level:
+                <select value="{{filter.level.min}}">
+                    <option value="0">Cantrip</option>
+                    <option value="1">1st</option>
+                    <option value="2">2nd</option>
+                    <option value="3">3rd</option>
+                    <option value="4">4th</option>
+                    <option value="5">5th</option>
+                    <option value="6">6th</option>
+                    <option value="7">7th</option>
+                    <option value="8">8th</option>
+                    <option value="9">9th</option>
+                </select>
+                -
+                <select value="{{filter.level.max}}">
+                    <option value="0">Cantrip</option>
+                    <option value="1">1st</option>
+                    <option value="2">2nd</option>
+                    <option value="3">3rd</option>
+                    <option value="4">4th</option>
+                    <option value="5">5th</option>
+                    <option value="6">6th</option>
+                    <option value="7">7th</option>
+                    <option value="8">8th</option>
+                    <option value="9">9th</option>
+                </select>
+            </span>
+        </div>
         {{#spells}}
         <div class="spell">
             <h3>{{name}}</h3>
