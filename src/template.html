@@ -1,21 +1,89 @@
-<div class='spell-list'>
-    {{#spells}}
-    <div class='spell'>
-        <h3 class='name'>{{name}}</h3>
-        <p class='type'><em>{{ formatSpellLevel(level, school) }} {{#ritual}}(ritual){{/}}</em></p>
-        <div class='stats'>
-            <div><strong>Casting Time:</strong> {{casting_time}}</div>
-            <div><strong>Range:</strong> {{range}}</div>
-            <div><strong>Components:</strong> {{components}} {{#material}}<em>({{material}})</em>{{/}}</div>
-            <div><strong>Duration:</strong> {{#concentration}}Concentration,{{/}} {{duration}}</div>
-        </div>
-        <div class='description'>
-            <p class='desc'>{{{desc}}}</p>
-            {{#higher_level}}
-            <span class='higher-level-label'><strong>At Higher Levels:</strong></span>
-            <span class='higher-level'>{{higher_level}}</span>
-            {{/}}
-        </div>
+<div class="col-xs-2">
+    {{#tabs}}
+    <div>
+        <input id="selector-{{.}}" type="radio" name="{{selectedTab}}" value="{{.}}">
+        <label for="selector-{{.}}">{{.}}</label>
     </div>
     {{/}}
+</div>
+<div class="col-xs-10">
+    <div class="tab {{#if selectedTab==='stats'}}selected{{/if}}">
+        <div class="col-xs-4">
+            <div class="form-horizontal">
+                <h3>Attributes</h3>
+                {{#each character.stats:stat}}
+                <div class="form-group">
+                    <label class="col-xs-6">{{stat}}</label>
+                    <input class="col-xs-3" type="number" value="{{.}}">
+                    <input class="col-xs-3" type="text" value="{{ Math.floor((. - 10) / 2) }}" readonly twoway="false">
+                </div>
+                {{/each}}
+            </div>
+            <label class="col-xs-9">Proficiency bonus</label>
+            <input class="col-xs-3" type="number" value="{{character.proficiency}}">
+            <div class="form-horizontal">
+                <h3>Saving Throws</h3>
+                {{#each character.savingThrows:savingThrow}}
+                <div class="form-group">
+                    <label class="col-xs-4">{{savingThrow}}</label>
+                    <div class="col-xs-4 btn-group" data-toggle="buttons">
+                        <label class="btn btn-default {{#if . == '0'}}active{{/if}}">
+                            <input type="radio" name="{{.}}" value="0" {{#if . == '0'}}checked{{/if}}>+0
+                        </label>
+                        <label class="btn btn-default {{#if . == '1'}}active{{/if}}">
+                            <input type="radio" name="{{.}}" value="1" {{#if . == '1'}}checked{{/if}}>+1
+                        </label>
+                    </div>
+                    <input class="col-xs-4" type="text" value="{{ Math.floor((character.stats[savingThrow] - 10) / 2) + (character.proficiency * .)}}" readonly twoway="false">
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="col-xs-8">
+            <h3>Skills</h3>
+            <div class="form-horizontal">
+                {{#each skills:skill}}
+                <div class="form-group">
+                    <label class="col-xs-4">{{name}} ({{stat}})</label>
+                    <div class="col-xs-4 btn-group" data-toggle="buttons">
+                        <label class="btn btn-default {{#if character.proficiencies[name] == 0}}active{{/if}}">
+                            <input type="radio" name="{{character.proficiencies[name]}}" value="0" {{#if character.proficiencies[name] == 0}}checked{{/if}}>+0
+                        </label>
+                        <label class="btn btn-default {{#if character.proficiencies[name] == 0.5}}active{{/if}}">
+                            <input type="radio" name="{{character.proficiencies[name]}}" value="0.5"{{#if character.proficiencies[name] == 0.5}}checked{{/if}}>+&frac12;
+                        </label>
+                        <label class="btn btn-default {{#if character.proficiencies[name] == 1}}active{{/if}}">
+                            <input type="radio" name="{{character.proficiencies[name]}}" value="1" {{#if character.proficiencies[name] == 1}}checked{{/if}}>+1
+                        </label>
+                        <label class="btn btn-default {{#if character.proficiencies[name] == 2}}active{{/if}}">
+                            <input type="radio" name="{{character.proficiencies[name]}}" value="2" {{#if character.proficiencies[name] == 2}}checked{{/if}}>+2
+                        </label>
+                    </div>
+                    <input class="col-xs-4" type="text" value="{{ Math.floor((character.stats[stat] - 10) / 2) + Math.floor(character.proficiency * character.proficiencies[name]) }}"
+                        readonly twoway="false">
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <div class="tab {{#if selectedTab==='spells'}}selected{{/if}}">
+        {{#spells}}
+        <div class="spell">
+            <h3>{{name}}</h3>
+            <p><em>{{ formatSpellLevel(level, school) }} {{#ritual}}(ritual){{/}}</em></p>
+            <div>
+                <div><strong>Casting Time:</strong> {{casting_time}}</div>
+                <div><strong>Range:</strong> {{range}}</div>
+                <div><strong>Components:</strong> {{components}} {{#material}}<em>({{material}})</em>{{/}}</div>
+                <div><strong>Duration:</strong> {{#concentration}}Concentration,{{/}} {{duration}}</div>
+            </div>
+            <div>
+                <p>{{{desc}}}</p>
+                {{#higher_level}} <span><strong>At Higher Levels:</strong></span> <span>{{higher_level}}</span> {{/}}
+            </div>
+        </div>
+        {{/}}
+    </div>
 </div>
