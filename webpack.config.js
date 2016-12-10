@@ -7,6 +7,8 @@ module.exports = {
             './src/main.js',
             './src/main.sass',
             './node_modules/bootstrap/dist/css/bootstrap.css',
+            './node_modules/select2/dist/css/select2.min.css',
+            './node_modules/select2-bootstrap-theme/dist/select2-bootstrap.min.css'
         ]
     },
     output: {
