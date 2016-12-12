@@ -1,5 +1,5 @@
 <template>
-    <div class="stats">
+    <div class="stats" v-on:change="saveCharacter(character)">
         <div class="col-xs-4">
             <div class="form-horizontal">
                 <h3>Attributes</h3>
@@ -79,14 +79,12 @@ export default {
             skills: skills
         }
     },
-    watch: {
-        character: function (foo) {
-            console.log("foo: "+ foo)
-        }
-    },
     methods: {
         asModifier (value) {
             return value < 0 ? value : '+' + value
+        },
+        saveCharacter (character) {
+            localStorage.setItem('character', JSON.stringify(character))
         }
     }
 }
