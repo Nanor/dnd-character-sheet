@@ -10,22 +10,31 @@ import App from './App'
 import Stats from './components/Stats.vue'
 import Spells from './components/Spells.vue'
 
+import api from './api.js'
+
 Vue.use(VueResource)
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
     {
-      path: '/stats',
-      component: Stats
-    },
-    {
-      path: '/spells',
-      component: Spells
-    },
-    {
       path: '',
-      redirect: '/stats'
+      component: {
+        template: '<div/>',
+        mounted() {
+          let latestCharacter = api.latestCharacter() || api.newCharacter()
+          this.$router.push(latestCharacter.id)
+        }
+      }
+    },
+    {
+      path: '/:id/stats',
+      component: Stats,
+      alias: '/:id'
+    },
+    {
+      path: '/:id/spells',
+      component: Spells
     }
   ]
 })

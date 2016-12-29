@@ -15,13 +15,13 @@
             </div>
             <div class="col-xs-2 form-group">
                 <label class="control-label">Between level</label>
-                <select class="form-control" v-model="filter.level.min">
+                <select class="form-control" v-model.number="filter.level.min">
                     <option v-for="(item, index) in spellLevels" :value="index">{{ item }}</option>
                 </select>
             </div>
             <div class="col-xs-2 form-group">
                 <label class="control-label">and</label>
-                <select class="form-control" v-model="filter.level.max">
+                <select class="form-control" v-model.number="filter.level.max">
                     <option v-for="(item, index) in spellLevels" :value="index">{{ item }}</option>
                 </select>
             </div>
@@ -78,7 +78,7 @@ export default {
                 .toLowerCase()
                 .includes(filter.name.toLowerCase())) &&
                 (filter.classes.length === 0 || _.intersection(spell.class, filter.classes).length > 0) &&
-                spell.level >= +filter.level.min && spell.level <= +filter.level.max;
+                spell.level >= filter.level.min && spell.level <= filter.level.max;
         }
     }
 }

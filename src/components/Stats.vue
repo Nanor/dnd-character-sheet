@@ -2,6 +2,12 @@
     <div class="stats" v-on:change="saveCharacter(character)">
         <div class="col-xs-4">
             <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-xs-4">Name</label>
+                    <div class="col-xs-8">
+                        <input class="form-control" v-model="character.name">
+                    </div>
+                </div>
                 <h3>Attributes</h3>
                 <div class="form-group" v-for="(value, stat) in character.stats">
                     <label class="col-xs-4 control-label">{{ stat }}</label>
@@ -51,7 +57,8 @@
                             <input type="radio" value="2" v-model="character.proficiencies[skill.name]">+2
                         </label>
                     </div>
-                    <p class="col-xs-4 form-control-static">{{ asModifier(Math.floor((character.stats[skill.stat] - 10) / 2) + Math.floor(character.proficiency * character.proficiencies[skill.name])) }}
+                    <p class="col-xs-4 form-control-static">{{ asModifier(Math.floor((character.stats[skill.stat] - 10) / 2) + Math.floor(character.proficiency *
+                        character.proficiencies[skill.name])) }}
                     </p>
                 </div>
             </div>
@@ -60,34 +67,34 @@
 </template>
 
 <script>
-import skills from '../data/skills.json'
-import _ from 'underscore'
+    import skills from '../data/skills.json'
+    import api from '../api.js'
 
-const stats = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-
-const character = JSON.parse(window.localStorage.getItem('character')) || {
-    stats: _.reduce(stats, (o, stat) => { o[stat] = 10; return o; }, {}),
-    proficiency: 1,
-    proficiencies: _.reduce(skills, (o, item) => { o[item.name] = 0; return o; }, {}),
-    savingThrows: _.reduce(stats, (o, stat) => { o[stat] = 0; return o; }, {}),
-};
-
-export default {
-    data () {
-        return {
-            character: character,
-            skills: skills
-        }
-    },
-    methods: {
-        asModifier (value) {
-            return value < 0 ? value : '+' + value
+    export default {
+        data() {
+            return {
+                character: null,
+                skills: skills
+            }
         },
-        saveCharacter (character) {
-            localStorage.setItem('character', JSON.stringify(character))
+        created() {
+            this.fetchData()
+        },  
+        methods: {
+            asModifier(value) {
+                return value < 0 ? value : '+' + value
+            },
+            fetchData() {
+                this.character = api.loadCharacter(this.$route.params.id)
+            },
+            saveCharacter(char) {
+                return api.saveCharacter(char)
+            }
+        },
+        watch: {
+            '$route': 'fetchData'
         }
     }
-}
 
 </script>
 
