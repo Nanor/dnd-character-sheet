@@ -1,11 +1,11 @@
 <template>
-    <div class="spells">
-        <div class="row">
-            <div class="col-xs-3 form-group">
+    <div class="spells container-fluid">
+        <div class="spell-filter row">
+            <div class="col-md-4 form-group">
                 <label class="control-label" for="filter-text">Spell Name</label>
                 <input type="text" class="form-control" id="filter-text" v-model="filter.name">
             </div>
-            <div class="col-xs-4 form-group">
+            <div class="col-md-4 form-group">
                 <label class="control-label" for="filter-class">In Class List</label>
                 <div class="select2-wrapper">
                     <select2 class="form-control" v-model="filter.classes" multiple>
@@ -13,20 +13,20 @@
                     </select>
                 </div>
             </div>
-            <div class="col-xs-2 form-group">
-                <label class="control-label">Between level</label>
+            <div class="col-md-2 form-group">
+                <label class="control-label">Min Level</label>
                 <select class="form-control" v-model.number="filter.level.min">
                     <option v-for="(item, index) in spellLevels" :value="index">{{ item }}</option>
                 </select>
             </div>
-            <div class="col-xs-2 form-group">
-                <label class="control-label">and</label>
+            <div class="col-md-2 form-group">
+                <label class="control-label">Max Level</label>
                 <select class="form-control" v-model.number="filter.level.max">
                     <option v-for="(item, index) in spellLevels" :value="index">{{ item }}</option>
                 </select>
             </div>
         </div>
-        <div class="spell row" v-for="spell in spells" v-if="filterSpell(spell, filter)">
+        <div class="spell row" v-for="spell in spells" v-if="filterSpell(spell, filter)" v-on:click="selectedSpell = spell.name" :class="selectedSpell == spell.name ? 'selected' : ''">
             <h3>{{ spell.name }}</h3>
             <div class="info">
                 <em>{{ formatSpellLevel(spell.level, spell.school) }} <span v-if="spell.ritual">(ritual)</span></em>
@@ -64,7 +64,8 @@ export default {
                     min: 0,
                     max: 9
                 }
-            }
+            },
+            selectedSpell: ''
         }
     },
     methods: {
@@ -94,7 +95,10 @@ export default {
     &:nth-child(even)
         background-color: whitesmoke
     
-    &:hover 
+    &.selected 
         .info
             max-height: 1000px
+
+.spell-filter
+    padding-left: 30px
 </style>

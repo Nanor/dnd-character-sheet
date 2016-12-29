@@ -47,7 +47,9 @@ Vue.component('select2', {
     $(this.$el)
       .val(this.value)
       // init select2
-      .select2({ data: this.options })
+      .select2({
+        width: '100%'
+      })
       // emit event on change.
       .on('change', function () {
         vm.$emit('input', $(vm.$el).val())

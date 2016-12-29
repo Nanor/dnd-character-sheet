@@ -1,6 +1,6 @@
 <template>
-    <div class="stats" v-on:change="saveCharacter(character)">
-        <div class="col-xs-4">
+    <div class="stats container-fluid" v-on:change="saveCharacter(character)">
+        <div class="col-md-6">
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-xs-4">Name</label>
@@ -17,47 +17,39 @@
                     <p class="col-xs-4 form-control-static">{{ asModifier(Math.floor((value - 10) / 2)) }}</p>
                 </div>
             </div>
-            <label class="col-xs-9">Proficiency bonus</label>
-            <div class="col-xs-3">
+            <label class="col-xs-8">Proficiency bonus</label>
+            <div class="col-xs-4">
                 <input class="form-control" type="number" v-model="character.proficiency">
             </div>
             <div class="form-horizontal">
                 <h3>Saving Throws</h3>
                 <div class="form-group" v-for="(value, stat) in character.savingThrows">
                     <label class="col-xs-4 control-label">{{ stat }}</label>
-                    <div class="col-xs-4 btn-group" data-toggle="buttons">
-                        <label class="btn btn-default" :class="{ active: !value }">
-                        <input type="radio" value="0" v-model="character.savingThrows[stat]">+0
-                    </label>
-                        <label class="btn btn-default" :class="{ active: value }">
-                        <input type="radio" value="1" v-model="character.savingThrows[stat]">+1
-                    </label>
+                    <div class="col-xs-4">
+                        <select class="form-control" v-model="character.savingThrows[stat]">
+                            <option value="0">+0</option>
+                            <option value="1">+1</option>
+                        </select>
                     </div>
                     <p class="col-xs-4 form-control-static">{{ asModifier(Math.floor((character.stats[stat] - 10) / 2) + (character.proficiency * value)) }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-xs-8">
+        <div class="col-md-6">
             <h3>Skills</h3>
             <div class="form-horizontal">
                 <div class="form-group" v-for="skill in skills">
-                    <label class="col-xs-4 control-label">{{ skill.name }} <small>({{ skill.stat }})</small></label>
-                    <div class="col-xs-4 btn-group" data-toggle="buttons">
-                        <label class="btn btn-default" :class="character.proficiencies[skill.name] == 0 ? 'active' : ''">
-                            <input type="radio" value="0" v-model="character.proficiencies[skill.name]">+0
-                        </label>
-                        <label class="btn btn-default" :class="character.proficiencies[skill.name] == 0.5 ? 'active' : ''">
-                            <input type="radio" value="0.5" v-model="character.proficiencies[skill.name]">+&frac12;
-                        </label>
-                        <label class="btn btn-default" :class="character.proficiencies[skill.name] == 1 ? 'active' : ''">
-                            <input type="radio" value="1" v-model="character.proficiencies[skill.name]">+1
-                        </label>
-                        <label class="btn btn-default" :class="character.proficiencies[skill.name] == 2 ? 'active' : ''">
-                            <input type="radio" value="2" v-model="character.proficiencies[skill.name]">+2
-                        </label>
+                    <label class="col-xs-6 control-label">{{ skill.name }} <small>({{ skill.stat }})</small></label>
+                    <div class="col-xs-3">
+                        <select class="form-control" v-model="character.proficiencies[skill.name]">
+                            <option value="0">+0</option>
+                            <option value="0.5">+&frac12</option>
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                        </select>
                     </div>
-                    <p class="col-xs-4 form-control-static">{{ asModifier(Math.floor((character.stats[skill.stat] - 10) / 2) + Math.floor(character.proficiency *
+                    <p class="col-xs-3 form-control-static">{{ asModifier(Math.floor((character.stats[skill.stat] - 10) / 2) + Math.floor(character.proficiency *
                         character.proficiencies[skill.name])) }}
                     </p>
                 </div>
@@ -99,5 +91,9 @@
 </script>
 
 <style lang="sass?indentedSyntax" scoped>
+label
+    text-transform: capitalize
 
+.control-label
+    text-align: right
 </style>
